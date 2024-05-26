@@ -5,7 +5,7 @@ def normalize_words(text):
     """
     Uses regex to trim down to clean words
     Args:
-        text (rdd): text from input file
+        text (string): text from input file
 
     Returns:
         list: lower case words culled from input text
@@ -18,6 +18,8 @@ sc = SparkContext(conf = conf)
 input = sc.textFile("file:///SparkCourse/Book")
 words = input.flatMap(normalize_words)
 
+# using this approach rather than countByValue in order to preserve the rdd format
+# rather than returning a dictionary
 wordCounts = words.map(lambda x: (x, 1)).reduceByKey(lambda x, y: x + y)
 wordCountsSorted = wordCounts.map(lambda x: (x[1], x[0])).sortByKey()
 
