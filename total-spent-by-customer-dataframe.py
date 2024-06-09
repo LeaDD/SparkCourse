@@ -15,6 +15,8 @@ input = spark.read.schema(schema).csv("file:///SparkCourse/customer-orders.csv")
 
 # aggregate by cust_id, sum and sort
 spent_by_customer = input.select("cust_id", "amt_spent").groupBy("cust_id").agg(func.sum("amt_spent").alias("total_spent")).sort(func.desc("total_spent"))
+spent_by_customer.printSchema()
+
 results = spent_by_customer.collect()
 
 # show results
